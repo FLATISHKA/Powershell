@@ -1,0 +1,49 @@
+#use secure connection if available ([bool], optional)
+$UseSecureConnectionIfAvailable = $true
+
+#authentication ([System.Management.Automation.PSCredential], optional)
+$Credential = [System.Management.Automation.PSCredential]::new("varia.skriptaus.testimaili@gmail.com", (ConvertTo-SecureString -String "VariaOppilas123" -AsPlainText -Force))
+
+#SMTP server ([string], required)
+$SMTPServer = "smtp.gmail.com"
+
+#port ([int], required)
+$Port = 587
+
+#sender ([MimeKit.MailboxAddress] http://www.mimekit.net/docs/html/T_MimeKit_MailboxAddress.htm, required)
+$From = [MimeKit.MailboxAddress]"varia.skriptaus.testimaili@gmail.com"
+
+#recipient list ([MimeKit.InternetAddressList] http://www.mimekit.net/docs/html/T_MimeKit_InternetAddressList.htm, required)
+$RecipientList = [MimeKit.InternetAddressList]::new()
+$RecipientList.Add([MimeKit.InternetAddress]"vladityomail@gmail.com")
+
+#subject ([string], required)
+$Subject = [string]"This is a test"
+
+#text body ([string], optional)
+$TextBody = [string]"testi 1"
+
+#HTML body ([string], optional)
+$HTMLBody = [string]"HTMLBody"
+
+$AttachmentList = [System.Collections.Generic.List[string]]::new()
+$AttachmentList.Add("C:\Users\User\Desktop\Scripts\8.12\Tehtäväkansio\tekstiedosto.txt")
+
+#splat parameters
+$Parameters = @{
+    "UseSecureConnectionIfAvailable" = $UseSecureConnectionIfAvailable
+    "Credential" = $Credential
+    "SMTPServer" = $SMTPServer
+    "Port" = $Port
+    "From" = $From
+    "RecipientList" = $RecipientList
+
+    "Subject" = $Subject
+    "TextBody" = $TextBody
+    "HTMLBody" = $HTMLBody
+    "AttachmentList" = $AttachmentList
+
+}
+
+#send message
+Send-MailKitMessage @Parameters

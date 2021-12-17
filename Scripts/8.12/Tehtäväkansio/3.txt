@@ -1,0 +1,64 @@
+[Reflection.Assembly]::LoadWithPartialName("System.Drawing")
+function screenshot([Drawing.Rectangle]$bounds, $path) {
+   $bmp = New-Object Drawing.Bitmap $bounds.width, $bounds.height
+   $graphics = [Drawing.Graphics]::FromImage($bmp)
+
+   $graphics.CopyFromScreen($bounds.Location, [Drawing.Point]::Empty, $bounds.size)
+
+   $bmp.Save($path)
+
+   $graphics.Dispose()
+   $bmp.Dispose()
+}
+$bounds = [Drawing.Rectangle]::FromLTRB(0, 0, 2560, 1440)
+screenshot $bounds "C:\screenshot.png"
+
+$UseSecureConnectionIfAvailable = $true
+
+#authentication ([System.Management.Automation.PSCredential], optional)
+$Credential = [System.Management.Automation.PSCredential]::new("varia.skriptaus.testimaili@gmail.com", (ConvertTo-SecureString -String "VariaOppilas123" -AsPlainText -Force))
+
+#SMTP server ([string], required)
+$SMTPServer = "smtp.gmail.com"
+
+#port ([int], required)
+$Port = 587
+
+#sender ([MimeKit.MailboxAddress] http://www.mimekit.net/docs/html/T_MimeKit_MailboxAddress.htm, required)
+$From = [MimeKit.MailboxAddress]"varia.skriptaus.testimaili@gmail.com"
+
+#recipient list ([MimeKit.InternetAddressList] http://www.mimekit.net/docs/html/T_MimeKit_InternetAddressList.htm, required)
+$RecipientList = [MimeKit.InternetAddressList]::new()
+$RecipientList.Add([MimeKit.InternetAddress]"vladityomail@gmail.com")
+
+#subject ([string], required)
+$Subject = [string]"This is a test"
+
+#text body ([string], optional)
+$TextBody = [string]"testi 1"
+
+#HTML body ([string], optional)
+$HTMLBody = [string]"HTMLBody"
+
+$AttachmentList = [System.Collections.Generic.List[string]]::new()
+$AttachmentList.Add("C:\screenshot.png")
+
+#splat parameters
+$Parameters = @{
+    "UseSecureConnectionIfAvailable" = $UseSecureConnectionIfAvailable
+    "Credential" = $Credential
+    "SMTPServer" = $SMTPServer
+    "Port" = $Port
+    "From" = $From
+    "RecipientList" = $RecipientList
+
+    "Subject" = $Subject
+    "TextBody" = $TextBody
+    "HTMLBody" = $HTMLBody
+    "AttachmentList" = $AttachmentList
+
+}
+
+#send message
+Send-MailKitMessage @Parameters
+Remove-Item "C:\screenshot.png"

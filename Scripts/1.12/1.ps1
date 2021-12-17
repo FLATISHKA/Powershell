@@ -1,0 +1,1 @@
+﻿Compress-Archive -Path ".\Tehtäväkansio\" -DestinationPath ".\1.zip"

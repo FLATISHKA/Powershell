@@ -1,0 +1,2 @@
+Get-NetIPAddress -AddressFamily IPv6 | Select-object -Property IPAddress, InterfaceAlias | Sort-Object -Property IPAddress, InterfaceAlias | Format-Table -HideTableHeaders | ConvertTo-Html | Out-File IP.html
+Invoke-Item IP.html

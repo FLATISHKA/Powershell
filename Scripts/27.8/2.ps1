@@ -1,0 +1,1 @@
+﻿Get-Process > Tehtävä2.txt

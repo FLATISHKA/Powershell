@@ -1,0 +1,1 @@
+Get-ChildItem -Path C:\Windows\System32 -Include *.dll -Recurse -Force >> success.txt 2>error.txt

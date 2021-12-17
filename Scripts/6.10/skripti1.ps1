@@ -1,0 +1,1 @@
+Get-ChildItem -path . -Recurse -Force -Exclude skripti1.ps1, skripti2.ps1 | foreach {$_.attributes = "Hidden"}

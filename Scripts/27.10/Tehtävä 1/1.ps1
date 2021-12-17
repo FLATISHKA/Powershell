@@ -1,0 +1,1 @@
+Get-ChildItem . -Filter "*.txt" -Recurse | Add-Content -value "123"
